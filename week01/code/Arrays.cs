@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 public static class Arrays
 {
     /// <summary>
@@ -13,7 +15,19 @@ public static class Arrays
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
 
-        return []; // replace this return statement with your own
+        // Step 1: create an array of type double. This will hold the multiples.
+        double[] multiples = new double[length];
+
+        // Step 2: loop to generate multiples
+        for (int i = 0; i < length; i++)
+        {
+            // Step 3: inside the loop declare a product variable to store the result of the multiple and multiple the number by (i + 1) to get the correct multiple.
+            double product = number * (i + 1);
+            // Step 4: Then add/store product to the array of multiples
+            multiples[i] = product;
+        }
+        //Step 5: return the array of multiples
+        return multiples; // replace this return statement with your own
     }
 
     /// <summary>
@@ -29,5 +43,16 @@ public static class Arrays
         // Remember: Using comments in your program, write down your process for solving this problem
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
+
+        //Step 1: Create List of type int named end (temporary Storage). Get the index of amount of element as starting up to the last elements in the List and store it to the temporary List name end by using GetRange() function.
+        List<int> end = data.GetRange(data.Count - amount, amount);
+
+        //Step 2: Remove the the index of amount of element as starting up to the last elements in the original List by using RemoveRange() function. To avoid duplication of data.
+        data.RemoveRange(data.Count - amount, amount);
+
+        //Step 3: Insert the end list to the beginning of the origianl List by using the InsertRange() function.
+        data.InsertRange(0, end);
+
+
     }
 }
