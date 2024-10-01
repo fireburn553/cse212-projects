@@ -45,6 +45,10 @@ public class TakingTurnsQueue
                 person.Turns -= 1;
                 _people.Enqueue(person);
             }
+            else if (person.Turns <= 0) //Added else if to check the person turns if equals or less than zero. If true then it will have infinite turn to queue.
+            {
+                _people.Enqueue(person);
+            }
 
             return person;
         }
