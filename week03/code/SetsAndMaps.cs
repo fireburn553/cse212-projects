@@ -21,8 +21,27 @@ public static class SetsAndMaps
     /// <param name="words">An array of 2-character words (lowercase, no duplicates)</param>
     public static string[] FindPairs(string[] words)
     {
-        // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        var pairs = new HashSet<string>();//The purpose of this set is to store the word.
+        List<string> pairsArr = new List<string>(); //List of string, I choose to use this instead of static array because of unknown numbers of pairs to be discovered during the checking
+        foreach (string word in words) //loop operation
+        {
+
+            //Reversing the word for checking 
+            string reverseWord = new string(word.Reverse().ToArray());
+
+            // if statement for checking the reversed word is in the set of pairs
+            if (!pairs.Contains(reverseWord))
+            {
+                pairs.Add(word); //adding the word to the set if the word is not in the set
+            }
+            else // in this portion after checking if the words is in the set then it will be process and put it on the list of pairs
+            {
+                string statement = $"{reverseWord} & {word}"; //formatting string to be inputted in the list
+                pairsArr.Add(statement);  // adding the statement to the list 
+            }
+        }
+
+        return pairsArr.ToArray(); // returning the converted list into array of string.
     }
 
     /// <summary>
@@ -42,7 +61,16 @@ public static class SetsAndMaps
         foreach (var line in File.ReadLines(filename))
         {
             var fields = line.Split(",");
-            // TODO Problem 2 - ADD YOUR CODE HERE
+            var degreeId = fields[3];
+
+            if (degrees.ContainsKey(degreeId))
+            {
+                degrees[degreeId]++;
+            }
+            else
+            {
+                degrees[degreeId] = 1;
+            }
         }
 
         return degrees;
@@ -66,8 +94,51 @@ public static class SetsAndMaps
     /// </summary>
     public static bool IsAnagram(string word1, string word2)
     {
-        // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        bool result = true; //declaring a boolean type of variable
+        word1 = word1.Replace(" ", "").ToLower(); //in this part we already process to clean the string 
+        word2 = word2.Replace(" ", "").ToLower();
+        var letter = new Dictionary<char, int>();
+
+        if (word1.Length != word2.Length) //Using the first checking if the word1 and word2 is not the same lenght/size then automatic false.
+        {
+            return false;
+        }
+
+        foreach (var i in word1) // first loop for the word1 to check if it is inside the dictionary and increase the value
+        {
+            if (letter.TryGetValue(i, out int value)) // trying the TryGetValue function as suggested by the vscode. This is for checking if the dictionary contains the key and pull up the value together with the key.
+            {
+                letter[i] = ++value; //add 1 to the current value
+            }
+            else
+            {
+                letter[i] = 1; // it will put the new key together with the value.
+            }
+        }
+
+        foreach (var j in word2) // second loop for the word2 to check if it is inside the dictionary and decrease the value
+        {
+            if (letter.TryGetValue(j, out int value)) //This is for checking if the dictionary contains the key and pull up the value together with the key.
+            {
+                letter[j] = --value;// decrease the current value value by 1
+            }
+            else
+            {
+                return false; //This will automatic return false if the key is not in the dictionary
+            }
+
+            if (letter[j] == 0) //checking if the value of the key is equal to 0. If thats the case then it will remove the element from the dictionary. Meaning the two words already match and is anagram
+            {
+                letter.Remove(j);
+            }
+        }
+
+        if (letter.Count == 0)//checking if the size of the dictionary is empty. Then the return will be true.
+        {
+            result = true;
+        }
+
+        return result;
     }
 
     /// <summary>
@@ -97,10 +168,26 @@ public static class SetsAndMaps
         var featureCollection = JsonSerializer.Deserialize<FeatureCollection>(json, options);
 
         // TODO Problem 5:
+        List<string> earthquakeSummaries = new List<string>(); // A list to store the string formatted output 
+
+        foreach (var feature in featureCollection.Features) // Loop through the Json
+        {
+            var mag = feature.Properties.Mag; // retrieve the magnitude attribute
+            var place = feature.Properties.Place; // retrieve the place attribute
+            var time = feature.Properties.Time; // retrieve the time attribute for checking date and time
+
+            DateTimeOffset dtf = DateTimeOffset.FromUnixTimeMilliseconds(time).DateTime; //converting milliseconds to Date and Time
+
+            if (dtf.Date == DateTime.Today) // to check if the date in the json file is the same with the current date 
+            {
+                earthquakeSummaries.Add($"{place} - Mag {mag}"); //if true then add element to the list
+            }
+
+        }
         // 1. Add code in FeatureCollection.cs to describe the JSON using classes and properties 
         // on those classes so that the call to Deserialize above works properly.
         // 2. Add code below to create a string out each place a earthquake has happened today and its magitude.
         // 3. Return an array of these string descriptions.
-        return [];
+        return earthquakeSummaries.ToArray(); // return list converted into array
     }
 }

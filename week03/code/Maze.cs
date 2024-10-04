@@ -32,7 +32,14 @@ public class Maze
     /// </summary>
     public void MoveLeft()
     {
-        // FILL IN CODE
+        if (_mazeMap[(_currX, _currY)][0]) // accessing the maze map to check if the first index is true or false
+        {
+            _currX -= 1; // if true then it will move left
+        }
+        else
+        {
+            throw new InvalidOperationException("Can't go that way!"); // if false it will throw an InvalidOperationException message.
+        }
     }
 
     /// <summary>
@@ -41,7 +48,14 @@ public class Maze
     /// </summary>
     public void MoveRight()
     {
-        // FILL IN CODE
+        if (_mazeMap[(_currX, _currY)][1])// accessing the maze map to check if the second index is true or false
+        {
+            _currX += 1; // if true then it will move right
+        }
+        else
+        {
+            throw new InvalidOperationException("Can't go that way!"); // if false it will throw an InvalidOperationException message.
+        }
     }
 
     /// <summary>
@@ -50,7 +64,15 @@ public class Maze
     /// </summary>
     public void MoveUp()
     {
-        // FILL IN CODE
+
+        if (_mazeMap[(_currX, _currY)][2])// accessing the maze map to check if the third index is true or false
+        {
+            _currY -= 1; // if true then it will move up
+        }
+        else
+        {
+            throw new InvalidOperationException("Can't go that way!"); // if false it will throw an InvalidOperationException message.
+        }
     }
 
     /// <summary>
@@ -59,7 +81,14 @@ public class Maze
     /// </summary>
     public void MoveDown()
     {
-        // FILL IN CODE
+        if (_mazeMap[(_currX, _currY)][3]) // accessing the maze map to check if the fourth index is true or false
+        {
+            _currY += 1; // if true then it will move down
+        }
+        else
+        {
+            throw new InvalidOperationException("Can't go that way!"); // if false it will throw an InvalidOperationException message.
+        }
     }
 
     public string GetStatus()
