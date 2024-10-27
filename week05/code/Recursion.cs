@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Diagnostics;
 
 public static class Recursion
 {
@@ -15,7 +16,14 @@ public static class Recursion
     public static int SumSquaresRecursive(int n)
     {
         // TODO Start Problem 1
-        return 0;
+        if (n <= 0)
+        {
+            return 0;
+        }
+        else
+        {
+            return n * n + SumSquaresRecursive(n - 1);
+        }
     }
 
     /// <summary>
@@ -40,6 +48,23 @@ public static class Recursion
     public static void PermutationsChoose(List<string> results, string letters, int size, string word = "")
     {
         // TODO Start Problem 2
+        //This is the base case. If the current permutation lenght equals size. add it to the list of result
+        if (word.Length == size)
+        {
+            results.Add(word);
+            return;
+        }
+
+        //This part is the recursion is happening. looking for every letter and checking if the letter is not been used 
+        for (var i = 0; i < letters.Length; i++)
+        {
+            if (!word.Contains(letters[i])) //Checking if the word is unique in the current word.
+            {
+                PermutationsChoose(results, letters, size, word + letters[i]);
+            }
+        }
+
+
     }
 
     /// <summary>
@@ -86,6 +111,11 @@ public static class Recursion
     /// </summary>
     public static decimal CountWaysToClimb(int s, Dictionary<int, decimal>? remember = null)
     {
+
+        // This part will initialize dictionary if remember variable is null
+        if (remember == null)
+            remember = new Dictionary<int, decimal>();
+
         // Base Cases
         if (s == 0)
             return 0;
@@ -97,9 +127,14 @@ public static class Recursion
             return 4;
 
         // TODO Start Problem 3
+        //Checking if the result for the current stack is already stored and computed in the dictionary remember
+        if (remember.ContainsKey(s))
+            return remember[s]; //if it contains the key then it will return the value.
 
-        // Solve using recursion
-        decimal ways = CountWaysToClimb(s - 1) + CountWaysToClimb(s - 2) + CountWaysToClimb(s - 3);
+        // Recursion is happening here, the parameter is the integer and the remember.
+        decimal ways = CountWaysToClimb(s - 1, remember) + CountWaysToClimb(s - 2, remember) + CountWaysToClimb(s - 3, remember);
+
+        remember[s] = ways; //the key will contain the value ways for the purpose of memoization
         return ways;
     }
 
@@ -119,6 +154,22 @@ public static class Recursion
     public static void WildcardBinary(string pattern, List<string> results)
     {
         // TODO Start Problem 4
+        //This part is the base part, if the pattern does contain the wildcard then the pattern will be added to the list of result
+        if (!pattern.Contains("*"))
+        {
+            results.Add(pattern);
+            return;
+        }
+
+        var index = pattern.IndexOf('*'); //using indexOf to find the location of the wildcard
+
+        //replacing wildcard with 0
+        string p0 = pattern.Substring(0, index) + '0' + pattern.Substring(index + 1); //manipulating the string and replace the wildcard to 0
+        WildcardBinary(p0, results); //Recursion for the zero pattern binary
+
+        //replacing wildcard with 1
+        string p1 = pattern.Substring(0, index) + '1' + pattern.Substring(index + 1); //manipulating the string and replace the wildcard to 1
+        WildcardBinary(p1, results); //Recursion for the one pattern binary
     }
 
     /// <summary>
