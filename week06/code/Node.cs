@@ -13,6 +13,12 @@ public class Node
     {
         // TODO Start Problem 1
 
+        // If the value is equal to the data, automatically return
+        if (value == Data)
+        {
+            return;
+        }
+
         if (value < Data)
         {
             // Insert to the left
@@ -34,12 +40,53 @@ public class Node
     public bool Contains(int value)
     {
         // TODO Start Problem 2
-        return false;
+        // If the value is equal to the data, automatically return true
+        if (value == Data)
+        {
+            return true;
+        }
+
+        //if the value is less than the current node, it will go and find in the left subtree
+        if (value < Data)
+        {
+            return Left != null && Left.Contains(value);
+        }
+        else
+        {//if the value is greater than the current node, it will go and find in the right subtree
+            return Right != null && Right.Contains(value);
+        }
+
     }
 
     public int GetHeight()
     {
         // TODO Start Problem 4
-        return 0; // Replace this line with the correct return statement(s)
+
+        //Declare variable for the left and right for comparison later
+        int hLeft;
+        int hRight;
+
+        //If left is not null then it will call recursively the GetHeight function
+        if (Left is not null)
+        {
+            hLeft = Left.GetHeight();
+        }
+        else //else the value of the hLeft is 0
+        {
+            hLeft = 0;
+        }
+
+        //If right is not null then it will call recursively the GetHeight function
+        if (Right is not null)
+        {
+            hRight = Right.GetHeight();
+        }
+        else //else the value of the hRight is 0
+        {
+            hRight = 0;
+        }
+
+        //I used the Math.Max function to compare the value of the variable and will add 1 to it.
+        return Math.Max(hLeft, hRight) + 1; // Replace this line with the correct return statement(s)
     }
 }
